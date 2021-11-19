@@ -13,6 +13,7 @@ namespace ArtistsApplicationDemo.Models
 
         [Required(ErrorMessage = "Title is required")]
         [StringLength(255, MinimumLength = 3)]
+        [Display(Name = "Song Title")]
         public string Title { get; set; }
 
         public string Youtube { get; set; }

@@ -7,18 +7,27 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ArtistsApplicationDemo.Models;
+using ArtistsApplicationDemo.Repositories;
+using ArtistsApplicationDemo.ViewModels;
 
 namespace ArtistsApplicationDemo.Controllers
 {
     public class AlbumsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        
+        private readonly AlbumRepository _albumRepository;
+        private readonly IArtistData _artistRepository;
+        public AlbumsController()
+        {
+            _albumRepository = new AlbumRepository();
+            _artistRepository = new ArtistRepository();
+        }
 
         // GET: Albums
         public ActionResult Index()
         {
-            var albums = db.Albums.Include(a => a.Artist);
-            return View(albums.ToList());
+            var albums = _albumRepository.GetAllWithArtist();
+            return View(albums);
         }
 
         // GET: Albums/Details/5
@@ -28,7 +37,7 @@ namespace ArtistsApplicationDemo.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Album album = db.Albums.Find(id);
+            Album album = _albumRepository.GetByIdWithArtist(id);
             if (album == null)
             {
                 return HttpNotFound();
@@ -39,8 +48,14 @@ namespace ArtistsApplicationDemo.Controllers
         // GET: Albums/Create
         public ActionResult Create()
         {
-            ViewBag.ArtistId = new SelectList(db.Artists, "ID", "FirstName");
-            return View();
+            //ViewBag.ArtistId = new SelectList(db.Artists, "ID", "FullName");
+            var artists = _artistRepository.GetAll();
+            var viewModel = new AlbumFormViewModel()
+            {
+                Album = new Album(),
+                Artists = artists
+            };
+            return View(viewModel);
         }
 
         // POST: Albums/Create
@@ -52,13 +67,18 @@ namespace ArtistsApplicationDemo.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Albums.Add(album);
-                db.SaveChanges();
+                _albumRepository.Create(album);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ArtistId = new SelectList(db.Artists, "ID", "FirstName", album.ArtistId);
-            return View(album);
+            //ViewBag.ArtistId = new SelectList(db.Artists, "ID", "FirstName", album.ArtistId);
+            var artists = _artistRepository.GetAll();
+            var viewModel = new AlbumFormViewModel()
+            {
+                Album = new Album(),
+                Artists = artists
+            };
+            return View(viewModel);
         }
 
         // GET: Albums/Edit/5
@@ -68,13 +88,20 @@ namespace ArtistsApplicationDemo.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Album album = db.Albums.Find(id);
+            Album album = _albumRepository.GetByIdWithArtist(id);
             if (album == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ArtistId = new SelectList(db.Artists, "ID", "FirstName", album.ArtistId);
-            return View(album);
+            //ViewBag.ArtistId = new SelectList(db.Artists, "ID", "FirstName", album.ArtistId);
+            var artists = _artistRepository.GetAll();
+            var viewModel = new AlbumFormViewModel()
+            {
+                Album = album,
+                Artists = artists
+            };
+            
+            return View(viewModel);
         }
 
         // POST: Albums/Edit/5
@@ -86,12 +113,17 @@ namespace ArtistsApplicationDemo.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(album).State = EntityState.Modified;
-                db.SaveChanges();
+                _albumRepository.Update(album);
                 return RedirectToAction("Index");
             }
-            ViewBag.ArtistId = new SelectList(db.Artists, "ID", "FirstName", album.ArtistId);
-            return View(album);
+            //ViewBag.ArtistId = new SelectList(db.Artists, "ID", "FirstName", album.ArtistId);
+            var artists = _artistRepository.GetAll();
+            var viewModel = new AlbumFormViewModel()
+            {
+                Album = album,
+                Artists = artists
+            };
+            return View(viewModel);
         }
 
         // GET: Albums/Delete/5
@@ -101,7 +133,8 @@ namespace ArtistsApplicationDemo.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Album album = db.Albums.Find(id);
+            Album album = _albumRepository.GetByIdWithArtist(id);
+
             if (album == null)
             {
                 return HttpNotFound();
@@ -114,9 +147,7 @@ namespace ArtistsApplicationDemo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Album album = db.Albums.Find(id);
-            db.Albums.Remove(album);
-            db.SaveChanges();
+            _albumRepository.Delete(id);
             return RedirectToAction("Index");
         }
 
@@ -124,7 +155,8 @@ namespace ArtistsApplicationDemo.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _albumRepository.Dispose();
+                _artistRepository.Dispose();
             }
             base.Dispose(disposing);
         }

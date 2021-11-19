@@ -98,6 +98,34 @@ namespace ArtistsApplicationDemo.Controllers
             return RedirectToAction("Index", "Songs");
         }
 
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var song = _context.Songs
+                .Include(s => s.Album)
+                .SingleOrDefault(s => s.ID == id);
+
+            if (song == null)
+            {
+                return HttpNotFound();
+            }
+
+            var albums = _context.Albums.ToList();
+
+            var viewModel = new SongFormViewModel()
+            {
+                Song = song,
+                Albums = albums
+            };
+
+            return View("SongForm", viewModel);
+        }
+
+
 
         protected override void Dispose(bool disposing)
         {

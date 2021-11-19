@@ -27,7 +27,10 @@ namespace ArtistsApplicationDemo.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Artist artist = db.Artists.Find(id);
+            Artist artist = db.Artists
+                .Include(a => a.Albums.Select(al => al.Songs))
+                .SingleOrDefault(a => a.ID == id);
+
             if (artist == null)
             {
                 return HttpNotFound();

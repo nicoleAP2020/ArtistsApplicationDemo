@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace ArtistsApplicationDemo.Models
+namespace ArtistsApplicationDemo.Dtos
 {
-    public class Artist
+    public class ArtistDto
     {
         public int ID { get; set; }
 
@@ -15,16 +14,14 @@ namespace ArtistsApplicationDemo.Models
         [StringLength(60, MinimumLength = 3)]
         public string FirstName { get; set; }
 
+
         [Required(ErrorMessage = "LastName is required")]
         [StringLength(60, MinimumLength = 3)]
         public string LastName { get; set; }
 
-        [NotMapped]
-        [Display(Name = "Artist Name")]
         public string FullName
         {
             get => $"{FirstName} {LastName}";
         }
-        public ICollection<Album> Albums { get; set; }
     }
 }
