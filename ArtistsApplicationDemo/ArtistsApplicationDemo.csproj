@@ -367,9 +367,12 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="img\Blueprint.jpg" />
     <Content Include="img\DanielCastro.jpg" />
+    <Content Include="img\DesperateRain.jpg" />
     <Content Include="img\music.jpeg" />
     <Content Include="img\na_image.jpg" />
+    <Content Include="img\NoSurrender.jpg" />
     <Content Include="img\RoryGallagher.jpg" />
     <Content Include="img\success.svg" />
     <Content Include="img\youtube.png" />
