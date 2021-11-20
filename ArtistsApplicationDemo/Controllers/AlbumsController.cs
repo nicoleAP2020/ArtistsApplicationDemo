@@ -13,6 +13,7 @@ using ArtistsApplicationDemo.ViewModels;
 
 namespace ArtistsApplicationDemo.Controllers
 {
+    [Authorize]
     public class AlbumsController : Controller
     {
         

@@ -11,6 +11,7 @@ using ArtistsApplicationDemo.Models;
 
 namespace ArtistsApplicationDemo.Controllers
 {
+    [Authorize]
     public class ArtistsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

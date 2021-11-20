@@ -10,6 +10,7 @@ using ArtistsApplicationDemo.ViewModels;
 
 namespace ArtistsApplicationDemo.Controllers
 {
+    [Authorize]
     public class SongsController : Controller
     {
         private ApplicationDbContext _context;

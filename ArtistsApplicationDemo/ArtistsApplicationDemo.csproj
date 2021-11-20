@@ -512,6 +512,8 @@
     <Content Include="Views\Songs\Index.cshtml" />
     <Content Include="Views\Songs\Details.cshtml" />
     <Content Include="Views\Songs\SongForm.cshtml" />
+    <Content Include="Views\Shared\_NavBar.cshtml" />
+    <Content Include="Views\Shared\_LoggedInNavBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
