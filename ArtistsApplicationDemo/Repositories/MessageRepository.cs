@@ -21,7 +21,7 @@ namespace ArtistsApplicationDemo.Repositories
             return _context.Messages.ToList();
         }
 
-        public Message GetById(int? id)
+        public Message GetById(int? id) //when called, message isread becomes true, because i opened the message
         {
             if (id == null)
                 throw new ArgumentNullException(nameof(id));

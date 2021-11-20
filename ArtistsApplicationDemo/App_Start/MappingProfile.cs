@@ -22,6 +22,8 @@ namespace ArtistsApplicationDemo.App_Start
             Mapper.CreateMap<Artist, ArtistDto>();
             Mapper.CreateMap<ArtistDto, Artist>();
 
+            Mapper.CreateMap<Message, MessageDto>();
+            Mapper.CreateMap<MessageDto, Message>();
 
         }
         

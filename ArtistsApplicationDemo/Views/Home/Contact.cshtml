@@ -1,17 +1,126 @@
-﻿@{
+﻿@model ArtistsApplicationDemo.Dtos.MessageDto
+@{
     ViewBag.Title = "Contact";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+<div class="row">
+    @section FullWidth{
+        <div id="google-map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3145.0698156778185!2d23.732681415323448!3d37.97549997972343!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14a1bd3e92480435%3A0x68ba1057cb0d560e!2zzqDOuy4gzqPPhc69z4TOrM6zzrzOsc-Ezr_PgiwgzpHOuM6uzr3OsQ!5e0!3m2!1sel!2sgr!4v1637402068560!5m2!1sel!2sgr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+    }
 
-<address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+    <div class="col-md-6">
+        <h2>Contact Info</h2>
+        <ul class="list-unstyled">
+            <li>
+                <i class="fas fa-map-marker-alt"></i>
+                <span>
+                    Syntagma Square,
+                    Athens
+                </span>
+            </li>
+            <li>
+                <i class="fas fa-phone"></i>
+                <span>
+                    +30 210 00 00 000
+                </span>
+            </li>
+            <li>
+                <i class="fas fa-envelope"></i>
+                <span>
+                    hello@myapp.org
+                </span>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-6">
+        <h2>Contact Form</h2>
+
+        <div class="success-message text-center">
+            <div id="suc-message" style="display:none">
+                <img src="~/img/success.svg" style="width:100px" />
+                <p>Message sent successfully. We will contact you as soon as possible.</p>
+            </div>
+        </div>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Sender, new { @class = "col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Sender, new { htmlAttributes = new { @class = "form-control", @id = "contactName" } })
+                        @Html.ValidationMessageFor(model => model.Sender, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, new { @class = "col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @id = "contactEmail" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Mobile, new { @class = "col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", @id = "contactPhone" } })
+                        @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Content, new { @class = "col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextArea("Content", new { rows = 10, columns = 40, @class = "form-control", @id = "message" })
+                        @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="submit" class="btn btn-default">Send</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            $("form").submit(function (e) {
+                e.preventDefault();
+                $("form").css('opacity', '0.3');
+                $.ajax({
+                    url: "/api/messages",
+                    method: "POST",
+                    data: {
+                        Sender: $("#contactName").val(),
+                        Email: $("#contactEmail").val(),
+                        Mobile: $("#contactPhone").val(),
+                        Content: $("#message").val(),
+                        IsRead: false
+                    }
+                }).done(function (data) {
+                    //console.log(data);
+                    setTimeout(function () {
+                        $("form").css('opacity', 0);
+                        $("#suc-message").show();
+                    },2000)
+                }).fail(function (error) {
+                    $("form").css('opacity', 0);
+                    console.log(error);
+                });
+            });
+        });
+    </script>
+}

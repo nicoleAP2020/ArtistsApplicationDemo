@@ -1,5 +1,5 @@
 ﻿body {
-    padding-top: 50px;
+    padding-top: 30px;
     padding-bottom: 20px;
 }
 
@@ -21,4 +21,25 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+
+#google-map iframe {
+    width: 100%;
+    height: 400px;
+}
+
+#imageHero {
+    object-fit: cover;
+    width: 100%;
+    height: 600px;
+}
+
+.music-thumb {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 175px;
+    height: 175px;
+    object-fit: cover;
 }
