@@ -181,6 +181,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\ArtistsController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AlbumsController.cs" />
     <Compile Include="Controllers\Api\AlbumsController.cs" />
@@ -212,6 +214,22 @@
     <Compile Include="Migrations\202111200940021_AddMessageModel.Designer.cs">
       <DependentUpon>202111200940021_AddMessageModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202111201114406_addPropertyToArtist.cs" />
+    <Compile Include="Migrations\202111201114406_addPropertyToArtist.Designer.cs">
+      <DependentUpon>202111201114406_addPropertyToArtist.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111201116105_SeedNameColumn.cs" />
+    <Compile Include="Migrations\202111201116105_SeedNameColumn.Designer.cs">
+      <DependentUpon>202111201116105_SeedNameColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111201935599_AddImageToAlbums.cs" />
+    <Compile Include="Migrations\202111201935599_AddImageToAlbums.Designer.cs">
+      <DependentUpon>202111201935599_AddImageToAlbums.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111201936586_SeedImagesOfAlbums.cs" />
+    <Compile Include="Migrations\202111201936586_SeedImagesOfAlbums.Designer.cs">
+      <DependentUpon>202111201936586_SeedImagesOfAlbums.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Album.cs" />
@@ -229,6 +247,7 @@
     <Compile Include="Repositories\MessageRepository.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AlbumFormViewModel.cs" />
+    <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\SongFormViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -348,6 +367,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="img\DanielCastro.jpg" />
+    <Content Include="img\music.jpeg" />
+    <Content Include="img\na_image.jpg" />
+    <Content Include="img\RoryGallagher.jpg" />
     <Content Include="img\success.svg" />
     <Content Include="img\youtube.png" />
     <Content Include="Scripts\bootbox.js" />
@@ -356,6 +379,14 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
+    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Admin\Views\Artists\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Artists\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Artists\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Artists\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Artists\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
@@ -481,6 +512,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Data\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -507,6 +539,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202111200940021_AddMessageModel.resx">
       <DependentUpon>202111200940021_AddMessageModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111201114406_addPropertyToArtist.resx">
+      <DependentUpon>202111201114406_addPropertyToArtist.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111201116105_SeedNameColumn.resx">
+      <DependentUpon>202111201116105_SeedNameColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111201935599_AddImageToAlbums.resx">
+      <DependentUpon>202111201935599_AddImageToAlbums.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111201936586_SeedImagesOfAlbums.resx">
+      <DependentUpon>202111201936586_SeedImagesOfAlbums.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

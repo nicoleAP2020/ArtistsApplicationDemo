@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ArtistsApplicationDemo.Repositories;
+using ArtistsApplicationDemo.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,11 +8,25 @@ using System.Web.Mvc;
 
 namespace ArtistsApplicationDemo.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
+        private readonly AlbumRepository _albumRepository;
+        private readonly ArtistRepository _artistRepository;
+
+        public HomeController()
+        {
+            _albumRepository = new AlbumRepository();
+            _artistRepository = new ArtistRepository();
+        }
         public ActionResult Index()
         {
-            return View();
+            HomeViewModel viewModel = new HomeViewModel()
+            {
+                Artists = _artistRepository.GetAll().Take(4), // Do this on repository
+                Albums = _albumRepository.GetAll().Take(4) // Do this on repository
+            };
+            return View(viewModel);
         }
 
         public ActionResult About()

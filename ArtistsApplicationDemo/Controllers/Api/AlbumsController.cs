@@ -11,6 +11,7 @@ using System.Web.Http;
 
 namespace ArtistsApplicationDemo.Controllers.Api
 {
+    //[RoutePrefix("myApi/Albums")]
     public class AlbumsController : ApiController
     {
         private readonly AlbumRepository _albumRepository;
@@ -19,11 +20,13 @@ namespace ArtistsApplicationDemo.Controllers.Api
             _albumRepository = new AlbumRepository();
         }
 
+        //[Route()]
         public IHttpActionResult GetAlbums()
         {
             return Ok(_albumRepository.GetAll().Select(Mapper.Map<Album,AlbumDto>)) ;
         }
 
+        //[Route("{id}")]
         public IHttpActionResult GetAlbum(int id)
         {
             var album = _albumRepository.GetById(id);
@@ -35,6 +38,7 @@ namespace ArtistsApplicationDemo.Controllers.Api
         }
 
 
+        //[Route()]
         [HttpPost]
         public IHttpActionResult CreateAlbum(AlbumDto albumDto)
         {
@@ -48,6 +52,7 @@ namespace ArtistsApplicationDemo.Controllers.Api
             return Created(new Uri(Request.RequestUri + "/" + album.ID),albumDto);
         }
 
+        //[Route("{id}")]
         [HttpPut]
         public IHttpActionResult Update(int id, AlbumDto albumDto)
         {
@@ -64,7 +69,7 @@ namespace ArtistsApplicationDemo.Controllers.Api
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-
+        //[Route("{id}")]
         [HttpDelete]
         public IHttpActionResult DeleteAlbum(int id)
         {
@@ -75,6 +80,23 @@ namespace ArtistsApplicationDemo.Controllers.Api
             _albumRepository.Delete(id);
 
             return Ok(albumInDb);
+        }
+
+        //[Route("GetTwo")]
+        [Route("myapi/Albums/GetTwo")]
+        public IHttpActionResult GetFirstTwoAlbums()
+        {
+            return Ok(_albumRepository
+                .GetFirstTwo()
+                .Select(Mapper.Map<Album, AlbumDto>));
+        }
+
+        //[Route("api/Albums/GetAllWithArtist")]
+        public IHttpActionResult GetAllWithArtist()
+        {
+            return Ok(_albumRepository
+                .GetAllWithArtist()
+                .Select(Mapper.Map<Album, AlbumDto>));
         }
 
         protected override void Dispose(bool disposing)

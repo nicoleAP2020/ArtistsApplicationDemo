@@ -1,37 +1,32 @@
-﻿using System;
+﻿using ArtistsApplicationDemo.Models;
+using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using ArtistsApplicationDemo.Models;
 
-namespace ArtistsApplicationDemo.Controllers
+namespace ArtistsApplicationDemo.Areas.Admin.Controllers
 {
     public class ArtistsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Artists
+        // GET: Admin/Artists
         public ActionResult Index()
         {
             return View(db.Artists.ToList());
         }
 
-        // GET: Artists/Details/5
+        // GET: Admin/Artists/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Artist artist = db.Artists
-                .Include(a => a.Albums.Select(al => al.Songs))
-                .SingleOrDefault(a => a.ID == id);
-
+            Artist artist = db.Artists.Find(id);
             if (artist == null)
             {
                 return HttpNotFound();
@@ -39,7 +34,7 @@ namespace ArtistsApplicationDemo.Controllers
             return View(artist);
         }
 
-        // GET: Artists/Create
+        // GET: Admin/Artists/Create
         public ActionResult Create()
         {
             return View();
@@ -48,20 +43,10 @@ namespace ArtistsApplicationDemo.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Artist artist)
+        public ActionResult Create([Bind(Include = "ID,FirstName,LastName,Thumbnail")] Artist artist)
         {
             if (ModelState.IsValid)
             {
-                if (artist.ImageFile == null)
-                {
-                    artist.Thumbnail = "na_image.jpg";
-                }
-                else
-                {
-                    artist.Thumbnail = Path.GetFileName(artist.ImageFile.FileName);
-                    string filename = Path.Combine(Server.MapPath("~/img"), artist.Thumbnail);
-                    artist.ImageFile.SaveAs(filename);
-                }
                 db.Artists.Add(artist);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -70,7 +55,7 @@ namespace ArtistsApplicationDemo.Controllers
             return View(artist);
         }
 
-        // GET: Artists/Edit/5
+        // GET: Admin/Artists/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -85,12 +70,9 @@ namespace ArtistsApplicationDemo.Controllers
             return View(artist);
         }
 
-        // POST: Artists/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,FirstName,LastName")] Artist artist)
+        public ActionResult Edit([Bind(Include = "ID,FirstName,LastName,Thumbnail")] Artist artist)
         {
             if (ModelState.IsValid)
             {
@@ -101,7 +83,7 @@ namespace ArtistsApplicationDemo.Controllers
             return View(artist);
         }
 
-        // GET: Artists/Delete/5
+        // GET: Admin/Artists/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -116,7 +98,7 @@ namespace ArtistsApplicationDemo.Controllers
             return View(artist);
         }
 
-        // POST: Artists/Delete/5
+        // POST: Admin/Artists/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

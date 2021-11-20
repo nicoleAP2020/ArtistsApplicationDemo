@@ -52,7 +52,9 @@ namespace ArtistsApplicationDemo.Repositories
 
         public IEnumerable<Album> GetAllWithArtist()
         {
-            return _context.Albums.Include(s => s.Artist).ToList();
+            var albums= _context.Albums.Include(s => s.Artist).ToList();
+
+            return albums;
         }
 
         public Album GetByIdWithArtist(int? id)
@@ -64,7 +66,12 @@ namespace ArtistsApplicationDemo.Repositories
                 .Include(a => a.Artist)
                 .SingleOrDefault(a => a.ID == id);
         }
+        public IEnumerable<Album> GetFirstTwo()
+        {
+            var albums = _context.Albums.Take(2).ToList();
 
+            return albums;
+        }
         public void Save()
         {
             _context.SaveChanges();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -59,14 +60,22 @@ namespace ArtistsApplicationDemo.Controllers
         }
 
         // POST: Albums/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Title,Description,ArtistId")] Album album)
+        public ActionResult Create(Album album,HttpPostedFileBase ImageFile)
         {
             if (ModelState.IsValid)
             {
+                if (ImageFile == null)
+                {
+                    album.Thumbnail = "na_image.jpg";
+                }
+                else
+                {
+                    album.Thumbnail = Path.GetFileName(ImageFile.FileName);
+                    string fileName = Path.Combine(Server.MapPath("~/img/"), album.Thumbnail);
+                    ImageFile.SaveAs(fileName);
+                }
                 _albumRepository.Create(album);
                 return RedirectToAction("Index");
             }
@@ -109,10 +118,14 @@ namespace ArtistsApplicationDemo.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Title,Description,ArtistId")] Album album)
+        public ActionResult Edit(Album album)
         {
             if (ModelState.IsValid)
             {
+                album.Thumbnail = Path.GetFileName(album.ImageFile.FileName);
+                string fileName = Path.Combine(Server.MapPath("~/img/"), album.Thumbnail);
+                album.ImageFile.SaveAs(fileName);
+
                 _albumRepository.Update(album);
                 return RedirectToAction("Index");
             }

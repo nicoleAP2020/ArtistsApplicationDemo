@@ -19,6 +19,10 @@ namespace ArtistsApplicationDemo.Models
         [DataType(DataType.MultilineText)]
         [Display(Name = "Album Description")]
         public string Description { get; set; }
+        public string Thumbnail { get; set; }
+
+        [NotMapped]
+        public HttpPostedFileBase ImageFile { get; set; }
 
         public ICollection<Song> Songs { get; set; }
 

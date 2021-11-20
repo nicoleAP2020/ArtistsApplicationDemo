@@ -19,6 +19,11 @@ namespace ArtistsApplicationDemo.Models
         [StringLength(60, MinimumLength = 3)]
         public string LastName { get; set; }
 
+        public string Thumbnail { get; set; }
+
+        [NotMapped]
+        public HttpPostedFileBase ImageFile { get; set; }
+
         [NotMapped]
         [Display(Name = "Artist Name")]
         public string FullName
